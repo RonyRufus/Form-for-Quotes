@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>DeltaQ Quote Generator</title>
+    <style>
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+        }
+
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DeltaQ Quote Generator</h1>
+        <form id="quoteForm">
+            <!-- Customer Information -->
+            <h2>Customer Information</h2>
+            <label for="customerName">Customer Name:</label>
+            <input type="text" id="customerName" name="customerName" required><br>
+
+
+            <label for="customerAddress">Address:</label>
+            <textarea id="customerAddress" name="customerAddress" required></textarea><br>
+
+
+            <label for="refNumber">Reference Number:</label>
+            <input type="text" id="refNumber" name="refNumber" required><br>
+
+
+            <!-- Quote Details -->
+            <h2>Quote Details</h2>
+            <label for="itemDescription">Item Description:</label>
+            <input type="text" id="itemDescription" name="itemDescription" required><br>
+
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required><br>
+
+
+            <label for="rate">Rate:</label>
+            <input type="number" id="rate" name="rate" required><br>
+
+
+            <button type="submit">Generate Quote</button>
+        </form>
+        <div id="response"></div>
+    </div>
+
+
+    <script>
+        document.getElementById('quoteForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+
+            const customerName = document.getElementById('customerName').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const refNumber = document.getElementById('refNumber').value;
+            const itemDescription = document.getElementById('itemDescription').value;
+            const quantity = document.getElementById('quantity').value;
+            const rate = document.getElementById('rate').value;
+
+
+            // Replace with your Google Apps Script URL
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyHjjVD-IZe6XAYKsI-xjQzycG7G0uO7WCsLHEA3mu50w_OnnHkErg3UhojeDUAoL3VwQ/exec';
+
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'customerName': customerName,
+                    'customerAddress': customerAddress,
+                    'refNumber': refNumber,
+                    'itemDescription': itemDescription,
+                    'quantity': quantity,
+                    'rate': rate
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('response').innerHTML = data;
+                // You can provide a link to download the document here
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+            });
+        });
+    </script>
+</body>
+</html>
